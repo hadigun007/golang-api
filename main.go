@@ -2,29 +2,23 @@ package main
 
 import (
 	"fmt"
-	"html/template"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hadigun007/golang-api/handler"
+	initial "github.com/hadigun007/golang-api/init"
 )
 
-func getHome(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "Hello World",
-	})
-}
-
-func GetHello(c *gin.Context) {
-	html := template.HTML("")
-	c.HTML(200, "ss", html)
+func init() {
+	initial.LoadEnv()
+	initial.LoadDB()
 }
 
 func main() {
 	fmt.Println("Hello World")
 
 	r := gin.Default()
-	r.GET("/", getHome)
-	r.GET("/hello", GetHello)
+	r.GET("/books", handler.AllBoks)
+	r.POST("/books", handler.StoreBook)
 
 	r.Run()
 }
